@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  app:
+    image: dockertest:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - 5006:5006
+    env_file:
+      - ./.env
+    environment:
+      - ENVIRONMENT=development
+    networks:
+      - network_main
+    volumes:
+      - ./frontend:/app/frontend
+      - ./lib:/app/lib
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5" # number of files or file count
+        max-size: "10m" # file size
+
+networks:
+  network_main:
+    external: true
